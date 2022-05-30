@@ -34,15 +34,15 @@ class App(tk.Tk):
         self.intro_label.config(font = ('Courier',15,'bold'))
 
 
-        self.date_label = Label(self, text = f"1 RON = {self.currency_converter.convert('RON','EUR',1)} EUR \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
-        self.date_label2 = Label(self, text = f"1 RON = {self.currency_converter.convert('RON','USD',1)} USD \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
-        self.date_label3 = Label(self, text = f"1 RON = {self.currency_converter.convert('RON','GBP',1)} GBP \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
-        #self.date_label4 = Label(self, text = f"1 RON = {self.currency_converter.convert('RON','MDL',1)} MDL \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
+        self.date_label = Label(self, text = f"1 EUR = {self.currency_converter.convert('EUR','RON',1)} RON \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
+        self.date_label2 = Label(self, text = f"1 USD = {self.currency_converter.convert('USD','RON',1)} RON \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
+        self.date_label3 = Label(self, text = f"1 GBP = {str(round(self.currency_converter.convert('GBP','RON',1), 2))} RON \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
+        #self.date_label4 = Label(self, text = f"1 RON = {self.currency_converter.convert('RON','YEN',1)} MDL \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
 
         self.intro_label.place(x = 155 , y = 5)
-        self.date_label.place(x = 190, y= 90)
-        self.date_label2.place(x= 190, y= 130)
-        self.date_label3.place(x= 192, y= 170)
+        self.date_label.place(x = 200, y= 90)
+        self.date_label2.place(x= 200, y= 130)
+        self.date_label3.place(x= 200, y= 170)
         #self.date_label4.place(x= 200, y= 170)
         entryText = tk.StringVar()
         valid = (self.register(self.restrictNumberOnly), '%d', '%P')
