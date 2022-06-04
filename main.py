@@ -2,7 +2,7 @@ import requests
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
-
+import re
 
 class RealTimeCurrencyConverter():
     def __init__(self,url):
@@ -15,7 +15,7 @@ class RealTimeCurrencyConverter():
             amount = amount / self.currencies[from_currency]
 
 
-        amount = round(amount * self.currencies[to_currency], 6)
+        amount = round(amount * self.currencies[to_currency], 2)
         return amount
 
 class App(tk.Tk):
@@ -37,16 +37,21 @@ class App(tk.Tk):
         self.date_label = Label(self, text = f"1 EUR = {self.currency_converter.convert('EUR','RON',1)} RON \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
         self.date_label2 = Label(self, text = f"1 USD = {self.currency_converter.convert('USD','RON',1)} RON \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
         self.date_label3 = Label(self, text = f"1 GBP = {str(round(self.currency_converter.convert('GBP','RON',1), 2))} RON \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
-        #self.date_label4 = Label(self, text = f"1 RON = {self.currency_converter.convert('RON','YEN',1)} MDL \n Data : {self.currency_converter.data['date']}", relief = tk.GROOVE, borderwidth = 5)
+
 
         self.intro_label.place(x = 155 , y = 5)
         self.date_label.place(x = 200, y= 90)
         self.date_label2.place(x= 200, y= 130)
         self.date_label3.place(x= 200, y= 170)
-        #self.date_label4.place(x= 200, y= 170)
-        entryText = tk.StringVar()
+
+        NameVar = tk.StringVar(value="")
         valid = (self.register(self.restrictNumberOnly), '%d', '%P')
-        self.amount_field = Entry(self,bd = 3, relief = tk.RIDGE, justify = tk.CENTER,validate='key', validatecommand=valid, textvariable=entryText)
+        self.amount_field = tk.Entry(self,bd = 3, relief = tk.RIDGE, justify = tk.CENTER,validate='key', validatecommand=valid, textvariable=NameVar)
+        self.amount_field.insert(0, "Introduce ti suma")
+        self.amount_field.pack()
+        self.amount_field.bind("<FocusIn>", lambda event: self.amount_field.delete(0,"end") if NameVar.get() == "Introduce ti suma" else None)
+        self.amount_field.bind("<FocusOut>", lambda event: self.amount_field.insert(0, "Enter your name here.") if NameVar.get() == "" else None)
+
         self.converted_amount_field_label = Label(self, text = '', fg = 'black', bg = 'white', relief = tk.RIDGE, justify = tk.CENTER, width = 17, borderwidth = 3)
         #entryText.set( "Hello World" )
 
@@ -65,9 +70,9 @@ class App(tk.Tk):
 
         self.to_currency_dropdown.place(x = 340, y= 120)
         self.converted_amount_field_label.place(x = 346, y = 150)
-        self.convert_button = Button(self, text = "Convert", fg = "black", command = self.perform)
+        self.convert_button = Button(self, text = "Convertire", fg = "black", command = self.perform)
         self.convert_button.config(font=('Courier', 10, 'bold'))
-        self.convert_button.place(x = 225, y = 220)
+        self.convert_button.place(x = 210, y = 220)
 
     def perform(self):
         amount = float(self.amount_field.get())
@@ -81,7 +86,7 @@ class App(tk.Tk):
 
 
     def restrictNumberOnly(self, action, string):
-        regex = re.compile(r"[0-9,]*?(\.)?[0-9,]*$")
+        regex = re.compile(r'[0-9,]*?(\.)?[0-9,]*$')
         result = regex.match(string)
         return (string == "" or (string.count('.') <= 1 and result is not None))
 
